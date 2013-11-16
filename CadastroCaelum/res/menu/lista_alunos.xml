@@ -1,9 +1,40 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
+        android:id="@+id/novo"
+    	android:showAsAction="always"
+        android:icon="@drawable/ic_novo"
+        android:title="Novo"/>
+    
+    <item 
+        android:id="@+id/mapa"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_mapa"
+        android:title="Mapa" />
+    
+    <item 
+    	android:title="Opções"
+		android:showAsAction="always"
+    	android:icon="@drawable/ic_opcoes" >
+    	<menu >
+		    <item 
+		        android:id="@+id/enviar_alunos"
+		        android:showAsAction="always"
+		        android:icon="@drawable/ic_enviar"
+		        android:title="Sincronizar" />
+		    
+		    <item 
+		        android:id="@+id/receber_provas"
+		        android:showAsAction="always"
+		        android:icon="@drawable/ic_receber"
+		        android:title="Baixar provas" />
+		    
+		    <item 
+		        android:id="@+id/preferencias"
+		        android:showAsAction="always"
+		        android:icon="@drawable/ic_preferencias"
+		        android:title="Preferencias" />
+    	</menu>
+    </item>
+    
 </menu>

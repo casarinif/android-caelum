@@ -1,5 +1,9 @@
 package br.com.caelum.cadastro;
 
+import java.util.List;
+
+import br.com.caelum.cadastro.dao.AlunoDAO;
+import br.com.caelum.cadastro.modelo.Aluno;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,10 +25,14 @@ public class ListaAlunos extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.listagem_alunos);
 		
-		String[] nomes = {"Rodrigo", "Alberto", "Maria", "Ana"};
+		//String[] nomes = {"Rodrigo", "Alberto", "Maria", "Ana"};
+		AlunoDAO dao = new AlunoDAO(this);
+		List<Aluno> alunos = dao.getLista();
+		dao.close();
+		
 		int layout = android.R.layout.simple_list_item_1;
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, layout, nomes);
+		ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, layout, alunos);
 		
 		ListView lista = (ListView) findViewById(R.id.lista);
 		lista.setAdapter(adapter);

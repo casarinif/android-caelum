@@ -9,6 +9,11 @@ public class Aluno {
 	private String telefone;
 	private Double nota;
 	/*private String foto;*/
+	
+	@Override
+	public String toString() {
+		return nome;
+	}
 
 	public Long getId() {
 		return id;

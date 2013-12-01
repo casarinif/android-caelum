@@ -14,6 +14,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
 	private static final String DATABASE = "CadastroCaelum";
 	private static final int VERSAO = 1;
+	private ContentValues values;
 
 	public AlunoDAO(Context context) {
 		super(context, DATABASE, null, VERSAO);
@@ -21,7 +22,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
 	public void salva(Aluno aluno) {
 		
-		ContentValues values = new ContentValues();
+		/*ContentValues values = new ContentValues();*/
 		values.put("nome", aluno.getNome());
 		values.put("site", aluno.getSite());
 		values.put("endereco", aluno.getEndereco());
@@ -52,7 +53,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 	}
 	
 	public List<Aluno> getLista() {
-		String[] colunas = {"id", "nome", "site", "telefone", "endereco"};
+		String[] colunas = {"id", "nome", "site", "telefone", "endereco"/*, "nota"*/};
 		ArrayList<Aluno> alunos = new ArrayList<Aluno>();
 		
 		Cursor cursor = getWritableDatabase().query("Alunos", colunas, null, null, null, null, null);

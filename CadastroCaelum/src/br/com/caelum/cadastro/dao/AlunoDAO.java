@@ -14,7 +14,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
 	private static final String DATABASE = "CadastroCaelum";
 	private static final int VERSAO = 1;
-	private ContentValues values;
+	/*private ContentValues values;*/
 
 	public AlunoDAO(Context context) {
 		super(context, DATABASE, null, VERSAO);
@@ -22,7 +22,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
 	public void salva(Aluno aluno) {
 		
-		/*ContentValues values = new ContentValues();*/
+		ContentValues values = new ContentValues();
 		values.put("nome", aluno.getNome());
 		values.put("site", aluno.getSite());
 		values.put("endereco", aluno.getEndereco());
@@ -69,6 +69,25 @@ public class AlunoDAO extends SQLiteOpenHelper {
 			alunos.add(aluno);
 		}
 		return alunos;
+	}
+
+	public void deletar(Aluno aluno) {
+		String[] args = {aluno.getId().toString()};
+		getWritableDatabase().delete("Alunos", "id=?", args);
+	}
+
+	public void altera(Aluno aluno) {
+		ContentValues values = new ContentValues();
+		values.put("nome", aluno.getNome());
+		values.put("site", aluno.getSite());
+		values.put("endereco", aluno.getEndereco());
+		/*values.put("nota", aluno.getNota());*/
+		/*values.put("foto", aluno.getFoto());*/
+		values.put("telefone", aluno.getTelefone());
+		
+		String[] args = {aluno.getId().toString()};
+		getWritableDatabase().update("Alunos", values, "id=?", args);
+		
 	}
 
 }

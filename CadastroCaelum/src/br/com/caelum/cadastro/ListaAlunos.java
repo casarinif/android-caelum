@@ -7,19 +7,22 @@ import br.com.caelum.cadastro.modelo.Aluno;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ListaAlunos extends Activity {
 
+	private Aluno aluno;
 	private ListView lista;
 	
 	@Override
@@ -30,14 +33,19 @@ public class ListaAlunos extends Activity {
 		//String[] nomes = {"Rodrigo", "Alberto", "Maria", "Ana"};
 
 		lista = (ListView) findViewById(R.id.lista);
+		
+		registerForContextMenu(lista);
+		
 		lista.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int posicao,
-					long id) {
+			public void onItemClick(AdapterView<?> adapter, View view, int posicao, long id) {
 
-				Toast.makeText(ListaAlunos.this, "Clique na posição "
-						+ posicao, Toast.LENGTH_SHORT).show();
+				Aluno alunoClicado = (Aluno) adapter.getItemAtPosition(posicao);
+				
+				Intent irParaFormulario = new Intent(ListaAlunos.this, Formulario.class);
+				irParaFormulario.putExtra("alunoSelecionado", alunoClicado);
+				startActivity(irParaFormulario);
 			}
 			
 		});
@@ -45,12 +53,11 @@ public class ListaAlunos extends Activity {
 		lista.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> adapter, View view,
-					int posicao, long id) {
+			public boolean onItemLongClick(AdapterView<?> adapter, View view, int posicao, long id) {
 
-				Toast.makeText(ListaAlunos.this, "Clique longo em " 
-						+ adapter.getItemAtPosition(posicao), Toast.LENGTH_LONG).show();
-				return true;
+				aluno = (Aluno) adapter.getItemAtPosition(posicao);
+				
+				return false;
 			}
 			
 		});
@@ -60,6 +67,10 @@ public class ListaAlunos extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
+		carregaLista();
+	}
+
+	private void carregaLista() {
 		AlunoDAO dao = new AlunoDAO(this);
 		List<Aluno> alunos = dao.getLista();
 		dao.close();
@@ -93,6 +104,35 @@ public class ListaAlunos extends Activity {
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+
+		menu.add("Ligar");
+		menu.add("Enviar SMS");
+		menu.add("Navegar no site");
+		
+		MenuItem deletar = menu.add("Deletar");
+		deletar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				
+				AlunoDAO dao = new AlunoDAO(ListaAlunos.this);
+				dao.deletar(aluno);
+				dao.close();
+				
+				carregaLista();
+				
+				return false;
+			}
+		});
+		
+		menu.add("Ver no mapa");
+		menu.add("Enviar e-mail");
+		
+		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 	
 }
